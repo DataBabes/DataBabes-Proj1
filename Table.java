@@ -33,7 +33,6 @@ public class Table
     /** Counter for naming temporary tables.
      */
     private static int count = 0;
-
     /** Table name.
      */
     private final String name;
@@ -81,7 +80,7 @@ public class Table
         key       = _key;
         tuples    = new ArrayList <> ();
 //      index     = new TreeMap <> ();       // also try BPTreeMap, LinHashMap or ExtHashMap
-        index     = new LinHashMap <> (KeyType.class, Comparable [].class);
+        index     = new LinkedHashMap <> ();
 
     } // constructor
 
@@ -102,7 +101,8 @@ public class Table
         domain    = _domain;
         key       = _key;
         tuples    = _tuples;
-        index     = new TreeMap <> ();       // also try BPTreeMap, LinHashMap or ExtHashMap
+        // index     = new TreeMap <> ();       // also try BPTreeMap, LinHashMap or ExtHashMap
+        index     = new LinkedHashMap <> ();        
     } // constructor
 
     /************************************************************************************
