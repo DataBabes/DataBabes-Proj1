@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+import sun.security.validator.KeyStores;
+
 import static java.lang.Boolean.*;
 import static java.lang.System.out;
 
@@ -131,6 +133,7 @@ public class Table
      *
      * @param attributes  the attributes to project onto
      * @return  a table of projected tuples
+     * @author Anthony Queen
      */
     public Table project (String attributes)
     {
@@ -141,7 +144,7 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-        //  T O   B E   I M P L E M E N T E D 
+        
 
         return new Table (name + count++, attrs, colDomain, newKey, rows);
     } // project
@@ -169,16 +172,17 @@ public class Table
      *
      * @param keyVal  the given key value
      * @return  a table with the tuple satisfying the key predicate
+     * @author Anthony Queen
      */
     public Table select (KeyType keyVal)
     {
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
         List <Comparable []> rows = new ArrayList <> ();
-
-        //  T O   B E   I M P L E M E N T E D 
-
-        return new Table (name + count++, attribute, domain, key, rows);
+        return new Table (name + count++, attribute, domain, key, 
+                    tuples.stream().filter(t -> t.equals(index.get(keyVal)))
+                    .collect(Collectors.toList()));
+                    // Arrays.asList(index.get(keyVal)));
     } // select
 
     /************************************************************************************
