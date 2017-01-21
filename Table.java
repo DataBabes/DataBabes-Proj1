@@ -144,7 +144,13 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-        
+        for( int i=0; i<tuples.size(); i++) {
+            Comparable [] temp = new Comparable[attrs.length];
+            for (int j=0; j<attrs.length; j++) {
+                temp[j] = tuples.get(i)[col(attrs[j])];
+            }
+            rows.add(temp);
+        }
 
         return new Table (name + count++, attrs, colDomain, newKey, rows);
     } // project
@@ -178,7 +184,6 @@ public class Table
     {
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
-        List <Comparable []> rows = new ArrayList <> ();
         return new Table (name + count++, attribute, domain, key, 
                     tuples.stream().filter(t -> t.equals(index.get(keyVal)))
                     .collect(Collectors.toList()));
