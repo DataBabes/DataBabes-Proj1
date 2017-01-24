@@ -225,16 +225,16 @@ public class Table
         out.println ("RA> " + name + ".minus (" + table2.name + ")");
         if (! compatible (table2)) return null;
 		
-		String [] attrs = attributes.split (" ");
-		String [] attrs2 = table2.attributes.split(" ");
+		//String [] attrs = attribute;
+		//String [] attrs2 = table2.attribute.split(" ");
 		
         List <Comparable []> rows = new ArrayList <> ();
 
 		for( int i=0; i<tuples.size(); i++) {
-			Comparable [] temp = new Comparable[attrs.length];
-			if(attrs[i] != attrs2[i]){
-				for (int j=0; j<attrs.length; j++) {
-					temp[j] = tuples.get(i)[col(attrs[j])];
+			Comparable [] temp = new Comparable[attribute.length];
+			if(!(tuples.get(i).equals(table2.tuples.get(i)))){
+				for (int j=0; j<attribute.length; j++) {
+					temp[j] = tuples.get(i)[col(attribute[j])];
 				}
 			}
             //if rows != table2.rows
