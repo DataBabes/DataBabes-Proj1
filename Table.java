@@ -224,10 +224,23 @@ public class Table
     {
         out.println ("RA> " + name + ".minus (" + table2.name + ")");
         if (! compatible (table2)) return null;
-
+		
+		String [] attrs = attributes.split (" ");
+		String [] attrs2 = table2.attributes.split(" ");
+		
         List <Comparable []> rows = new ArrayList <> ();
 
-         
+		for( int i=0; i<tuples.size(); i++) {
+			Comparable [] temp = new Comparable[attrs.length];
+			if(attrs[i] != attrs2[i]){
+				for (int j=0; j<attrs.length; j++) {
+					temp[j] = tuples.get(i)[col(attrs[j])];
+				}
+			}
+            //if rows != table2.rows
+			//temp= rows
+            rows.add(temp);
+        }         
 
         return new Table (name + count++, attribute, domain, key, rows);
     } // minus
@@ -481,12 +494,15 @@ public class Table
      * @param t  the tuple as a list of attribute values
      * @return  whether the tuple has the right size and values that comply
      *          with the given domains
+	 *@author Kaitlin McFarland
      */
     private boolean typeCheck (Comparable [] t)
     { 
-        //  T O   B E   I M P L E M E N T E D 
+        if(t.length == tuples.size()){
+			return true;			
+		}
 
-        return true;
+        return false;
     } // typeCheck
 
     /************************************************************************************
