@@ -246,19 +246,26 @@ public class Table
 		
         List <Comparable []> rows = new ArrayList <> ();
 
-		for( int i=0; i<tuples.size(); i++) {
-			Comparable [] temp = new Comparable[attribute.length];
-			if(!(tuples.get(i).equals(table2.tuples.get(i)))){
-				for (int j=0; j<attribute.length; j++) {
-					temp[j] = tuples.get(i)[col(attribute[j])];
-				}
-			}
-            //if rows != table2.rows
-			//temp= rows
-            rows.add(temp);
-        }         
+        for (int i=0; i<tuples.size(); i++){
+            if (!table2.index.containsValue(tuples.get(i)))
+                rows.add(tuples.get(i));
+        }
 
         return new Table (name + count++, attribute, domain, key, rows);
+
+
+		// for( int i=0; i<tuples.size(); i++) {
+		// 	Comparable [] temp = new Comparable[attribute.length];
+		// 	if(!(tuples.get(i).equals(table2.tuples.get(i)))){
+		// 		for (int j=0; j<attribute.length; j++) {
+		// 			temp[j] = tuples.get(i)[col(attribute[j])];
+		// 		}
+		// 	}
+        //     //if rows != table2.rows
+		// 	//temp= rows
+        //     rows.add(temp);
+        // }         
+
     } // minus
 
     /************************************************************************************
