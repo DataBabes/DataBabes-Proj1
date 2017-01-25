@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+import sun.security.validator.KeyStores;
+
 import static java.lang.Boolean.*;
 import static java.lang.System.out;
 
@@ -33,7 +35,6 @@ public class Table
     /** Counter for naming temporary tables.
      */
     private static int count = 0;
-
     /** Table name.
      */
     private final String name;
@@ -102,7 +103,8 @@ public class Table
         domain    = _domain;
         key       = _key;
         tuples    = _tuples;
-        index     = new TreeMap <> ();       // also try BPTreeMap, LinHashMap or ExtHashMap
+        // index     = new TreeMap <> ();       // also try BPTreeMap, LinHashMap or ExtHashMap
+        index     = new LinkedHashMap <> ();        
     } // constructor
 
     /************************************************************************************
@@ -131,6 +133,7 @@ public class Table
      *
      * @param attributes  the attributes to project onto
      * @return  a table of projected tuples
+     * @author Anthony Queen
      */
     public Table project (String attributes)
     {
@@ -141,7 +144,13 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-        //  T O   B E   I M P L E M E N T E D 
+        for( int i=0; i<tuples.size(); i++) {
+            Comparable [] temp = new Comparable[attrs.length];
+            for (int j=0; j<attrs.length; j++) {
+                temp[j] = tuples.get(i)[col(attrs[j])];
+            }
+            rows.add(temp);
+        }
 
         return new Table (name + count++, attrs, colDomain, newKey, rows);
     } // project
@@ -169,16 +178,16 @@ public class Table
      *
      * @param keyVal  the given key value
      * @return  a table with the tuple satisfying the key predicate
+     * @author Anthony Queen
      */
     public Table select (KeyType keyVal)
     {
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
-        List <Comparable []> rows = new ArrayList <> ();
-
-        //  T O   B E   I M P L E M E N T E D 
-
-        return new Table (name + count++, attribute, domain, key, rows);
+        return new Table (name + count++, attribute, domain, key, 
+                    tuples.stream().filter(t -> t.equals(index.get(keyVal)))
+                    .collect(Collectors.toList()));
+                    // Arrays.asList(index.get(keyVal)));
     } // select
 
     /************************************************************************************
@@ -225,15 +234,29 @@ public class Table
      *
      * @param table2  The rhs table in the minus operation
      * @return  a table representing the difference
+	 *@author Kaitlin McFarland
      */
     public Table minus (Table table2)
     {
         out.println ("RA> " + name + ".minus (" + table2.name + ")");
         if (! compatible (table2)) return null;
-
+		
+		//String [] attrs = attribute;
+		//String [] attrs2 = table2.attribute.split(" ");
+		
         List <Comparable []> rows = new ArrayList <> ();
 
-        //  T O   B E   I M P L E M E N T E D 
+		for( int i=0; i<tuples.size(); i++) {
+			Comparable [] temp = new Comparable[attribute.length];
+			if(!(tuples.get(i).equals(table2.tuples.get(i)))){
+				for (int j=0; j<attribute.length; j++) {
+					temp[j] = tuples.get(i)[col(attribute[j])];
+				}
+			}
+            //if rows != table2.rows
+			//temp= rows
+            rows.add(temp);
+        }         
 
         return new Table (name + count++, attribute, domain, key, rows);
     } // minus
@@ -487,12 +510,24 @@ public class Table
      * @param t  the tuple as a list of attribute values
      * @return  whether the tuple has the right size and values that comply
      *          with the given domains
+	 *@author Kaitlin McFarland
      */
     private boolean typeCheck (Comparable [] t)
     { 
-        //  T O   B E   I M P L E M E N T E D 
+        // makes sure tuple is the same size as domain length
+        if(t.length == domain.length){
+			for(int i=0; i<domain.length; i++){
 
-        return true;
+                // make sure that the type of variable matches the domain type
+				if(!domain[i].isInstance(t[i]))
+					return false;
+			}
+
+            // if all are the correct type and the lenght is correct
+			return true;			
+		}
+
+        return false;
     } // typeCheck
 
     /************************************************************************************

@@ -16,6 +16,7 @@ class ArrayUtil
      *
      * @see http://stackoverflow.com/questions/80476/how-to-concatenate-two-arrays-in-java
      *
+	 *testing
      * @param arr1  the first array
      * @param arr2  the second array
      * @return  a wider array containing all the values from arr1 and arr2
