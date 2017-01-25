@@ -498,11 +498,16 @@ public class Table
      */
     private boolean typeCheck (Comparable [] t)
     { 
+        // makes sure tuple is the same size as domain length
         if(t.length == domain.length){
 			for(int i=0; i<domain.length; i++){
-				if(domain[i].equals(t[i]))
-					return true;
+
+                // make sure that the type of variable matches the domain type
+				if(!domain[i].isInstance(t[i]))
+					return false;
 			}
+
+            // if all are the correct type and the lenght is correct
 			return true;			
 		}
 
