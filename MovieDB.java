@@ -87,12 +87,14 @@ class MovieDB
         studio.print ();
 
         // these are just causeing IO Exceptions. -aq
-        // movie.save ();
-        // cinema.save ();
-        // movieStar.save ();
-        // starsIn.save ();
-        // movieExec.save ();
-        // studio.save ();
+		/*
+        movie.save ();
+        cinema.save ();
+        movieStar.save ();
+        starsIn.save ();
+        movieExec.save ();
+        studio.save ();
+		*/
 
         movieStar.printIndex ();
 

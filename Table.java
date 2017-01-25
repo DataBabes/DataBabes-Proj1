@@ -498,11 +498,18 @@ public class Table
      */
     private boolean typeCheck (Comparable [] t)
     { 
+	/*
         if(t.length == tuples.size()){
-			return true;			
+			//for(int i=0; i<domain.length; i++){
+				//if(domain[i].equals(t.domain[i]))
+					return true;
+			//}
+			//return true;			
 		}
 
         return false;
+		*/
+		return true;
     } // typeCheck
 
     /************************************************************************************
