@@ -52,10 +52,12 @@ class MovieDB
         movie.print ();
 
         Comparable [] film4 = { "Galaxy_Quest", 1999, 104, "comedy", "DreamWorks", 67890 };
-        out.println ();
+        Comparable [] film5={"Star_Wars",1977,124,"sciFi","Fox",12345};
+	out.println ();
         cinema.insert (film2);
         cinema.insert (film3);
         cinema.insert (film4);
+	cinema.insert (film5);
         cinema.print ();
 
         Comparable [] star0 = { "Carrie_Fisher", "Hollywood", 'F', "9/9/99" };
