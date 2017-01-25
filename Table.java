@@ -10,6 +10,8 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
+
 import sun.security.validator.KeyStores;
 
 import static java.lang.Boolean.*;
@@ -246,13 +248,28 @@ public class Table
 		
         List <Comparable []> rows = new ArrayList <> ();
 
-        table2.printIndex();
-        for (int i=0; i<tuples.size(); i++){
-            if (!table2.index.containsValue(tuples.get(i)))
-                rows.add(tuples.get(i));
+        Set <KeyType> keys1 = index.keySet();
+        Set <KeyType> keys2 = table2.index.keySet();
+
+        for (KeyType key: keys2){
+            if (keys1.contains(key))
+                keys1.remove(key);
         }
 
+        for (KeyType key: keys1) rows.add(index.get(key));
+
+
         return new Table (name + count++, attribute, domain, key, rows);
+        // does not work something to do with checking location rather than value.
+        // table2.printIndex();
+        // for (int i=0; i<tuples.size(); i++){
+        //     if (!table2.index.containsValue(tuples.get(i)))
+        //         rows.add(tuples.get(i));
+        //     else {
+        //         System.out.println(i);
+        //     }
+        // }
+
 
 
 		// for( int i=0; i<tuples.size(); i++) {
