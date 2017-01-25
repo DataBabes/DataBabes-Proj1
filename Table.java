@@ -81,7 +81,7 @@ public class Table
         key       = _key;
         tuples    = new ArrayList <> ();
 //      index     = new TreeMap <> ();       // also try BPTreeMap, LinHashMap or ExtHashMap
-        index     = new LinHashMap <> (KeyType.class, Comparable [].class);
+        index     = new LinkedHashMap <> ();
 
     } // constructor
 
@@ -186,6 +186,7 @@ public class Table
      *
      * #usage movie.union (show)
      *
+	 * @author Cuza Onyeagba
      * @param table2  the rhs table in the union operation
      * @return  a table representing the union
      */
@@ -195,8 +196,23 @@ public class Table
         if (! compatible (table2)) return null;
 
         List <Comparable []> rows = new ArrayList <> ();
-
-        //  T O   B E   I M P L E M E N T E D 
+	
+		//add all rows in the first table
+		 tuples.stream().forEach((t) -> {
+            rows.add(t);
+        });
+		
+		//add all rows in table2
+			//check table2 for duplicates
+		table2.tuples.stream().forEach(t2 -> {
+			boolean exists = false;
+			for(Comparable[] tuple:tuples){
+				if(t2 == tuple)exists=true;
+			}
+			//add if not a duplicate
+			if(!exists)rows.add(t2);
+		});
+		
 
         return new Table (name + count++, attribute, domain, key, rows);
     } // union

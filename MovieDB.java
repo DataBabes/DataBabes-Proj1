@@ -96,6 +96,7 @@ class MovieDB
         movieStar.printIndex ();
 
         //--------------------- project: title year
+		out.println("TESTING Functions");
 
         out.println ();
         Table t_project = movie.project ("title year");
