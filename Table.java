@@ -246,6 +246,7 @@ public class Table
 		
         List <Comparable []> rows = new ArrayList <> ();
 
+        table2.printIndex();
         for (int i=0; i<tuples.size(); i++){
             if (!table2.index.containsValue(tuples.get(i)))
                 rows.add(tuples.get(i));

@@ -35,7 +35,7 @@ class MovieDB
                                               "String Integer String", "movieTitle movieYear starName");
 
         Table movieExec = new Table ("movieExec", "certNo name address fee",
-                                                  "Integer String String Float", "certNo");
+                                                  "Integer String String Double", "certNo");
 
         Table studio = new Table ("studio", "name address presNo",
                                             "String String Integer", "name");
@@ -135,6 +135,8 @@ class MovieDB
         //--------------------- minus: movie MINUS cinema
 
         out.println ();
+        movie.print();
+        cinema.print();
         Table t_minus = movie.minus (cinema);
         t_minus.print ();
 
