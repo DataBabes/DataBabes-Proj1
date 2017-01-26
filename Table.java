@@ -390,10 +390,7 @@ public class Table
 			}
 		}
 		
-		return new Table (name + count++, 
-						attributes, //.toArray(new String[attributes.size()]), 
-						domains, //.toArray(new Class[domains.size()]), 
-						ArrayUtil.concat (key, table2.key), rows);
+		return new Table (name + count++, attributes, domains, ArrayUtil.concat (key, table2.key), rows);
     } // join
 
     /************************************************************************************
