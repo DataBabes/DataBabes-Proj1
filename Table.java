@@ -260,29 +260,8 @@ public class Table
 
 
         return new Table (name + count++, attribute, domain, key, rows);
-        // does not work something to do with checking location rather than value.
-        // table2.printIndex();
-        // for (int i=0; i<tuples.size(); i++){
-        //     if (!table2.index.containsValue(tuples.get(i)))
-        //         rows.add(tuples.get(i));
-        //     else {
-        //         System.out.println(i);
-        //     }
-        // }
-
-
-
-		// for( int i=0; i<tuples.size(); i++) {
-		// 	Comparable [] temp = new Comparable[attribute.length];
-		// 	if(!(tuples.get(i).equals(table2.tuples.get(i)))){
-		// 		for (int j=0; j<attribute.length; j++) {
-		// 			temp[j] = tuples.get(i)[col(attribute[j])];
-		// 		}
-		// 	}
-        //     //if rows != table2.rows
-		// 	//temp= rows
-        //     rows.add(temp);
-        // }         
+ 
+        
 
     } // minus
 
