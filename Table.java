@@ -236,31 +236,27 @@ public class Table
      *
      * @param table2  The rhs table in the minus operation
      * @return  a table representing the difference
-	 *@author Kaitlin McFarland
+	 * @author Kaitlin McFarland
      */
     public Table minus (Table table2)
     {
         out.println ("RA> " + name + ".minus (" + table2.name + ")");
         if (! compatible (table2)) return null;
 		
-		//String [] attrs = attribute;
-		//String [] attrs2 = table2.attribute.split(" ");
-		
         List <Comparable []> rows = new ArrayList <> ();
 
-        Set <KeyType> keys1 = index.keySet();
-        Set <KeyType> keys2 = table2.index.keySet();
+        Set <KeyType> keys1 = index.keySet(); //this table keys
+        Set <KeyType> keys2 = table2.index.keySet(); //table2 keys
 
+		//compare each keys from each table
         for (KeyType key: keys2){
             if (keys1.contains(key))
-                keys1.remove(key);
+                keys1.remove(key);//if keys1 is the same from keys2
         }
 
-        for (KeyType key: keys1) rows.add(index.get(key));
-
+        for (KeyType key: keys1) rows.add(index.get(key));//for the key types leftover that are not matched in table 2
 
         return new Table (name + count++, attribute, domain, key, rows);
- 
         
 
     } // minus
@@ -276,6 +272,7 @@ public class Table
      * @param attribute2  the attributes of table2 to be compared (Primary Key)
      * @param table2      the rhs table in the join operation
      * @return  a table with tuples satisfying the equality predicate
+	 *@author Houston Bass
      */
     public Table join (String attribute1, String attribute2, Table table2)
     {
@@ -328,6 +325,7 @@ public class Table
      *
      * @param table2  the rhs table in the join operation
      * @return  a table with tuples satisfying the equality predicate
+	 * @author Houston Bass
      */
     public Table join (Table table2)
     {
