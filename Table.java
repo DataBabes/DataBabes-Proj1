@@ -286,6 +286,7 @@ public class Table
 		String[] attributes2 = attribute2.split(" ");
 		int[][] mapping = new int[attributes1.length][2];
 		
+		// make an array of pairs to map the cols that need comparing
 		for(int i=0; i<mapping.length; i++) {
 			int[] tmp = new int[2];
 			tmp[0] = col(attributes1[i]);
@@ -295,10 +296,16 @@ public class Table
 			
 		} 
 		
+		//for every pair
 		for(int i=0; i<mapping.length; i++) {
+			//for every row in table 1
 			for(int row1=0; row1<tuples.size(); row1++) {
+				//for every row in table2
 				for(int row2=0; row2<table2.tuples.size(); row2++) {
+					//if the value in row1, col1 == row2, col2
+					//used the mapping array to get the right col
 					if(tuples.get(row1)[mapping[i][0]] == table2.tuples.get(row2)[mapping[i][1]]) {
+						//copy the new joined row into rows
 						Comparable [] tmp = new Comparable[attribute.length + table2.attribute.length];
 						for (int m=0; m<attribute.length + table2.attribute.length; m++) {
 							if(m < attribute.length)
@@ -337,6 +344,7 @@ public class Table
 		List <Integer> get_mapping = new ArrayList<> ();
 		List <Class> get_domains = new ArrayList<> ();
 		
+		//add all table1 attributes to the joined attributes list
 		int i=0;
 		for(int j=0; j<attribute.length; j++) {
 			get_attributes.add(attribute[j]);
@@ -345,6 +353,7 @@ public class Table
 			i++;
 		}
 		
+		//add all the non duplicate attributes from table2 to the list
 		for (int j=0; j<table2.attribute.length; j++){
             boolean duplicate = false;
 			for(int k=0; k<get_attributes.size(); k++) {
@@ -353,6 +362,7 @@ public class Table
 					break;
 				}
 			}
+			//add the duplicates to a specail list that we will use for comparing later
 			if (duplicate) 
 				equalAttributes.add(table2.attribute[j]);
 			else {
@@ -362,18 +372,23 @@ public class Table
 			}
 			i++;
 		}
-		
+		//convert the lists to arrays for easier traversal (not necissary but i liked it better this way)
 		String[] attributes = get_attributes.toArray(new String[get_attributes.size()]);
 		Integer[] mapping = get_mapping.toArray(new Integer[get_mapping.size()]);
 		Class[] domains = get_domains.toArray(new Class[get_domains.size()]);	
 		
+		//for all the equal attributes
 		for(int j=0; j<equalAttributes.size(); j++) {
 			
+			//get the colum numbers for the rows
 			int col1 = col(equalAttributes.get(j));
 			int col2 = table2.col(equalAttributes.get(j));
 			
+			//for each row in table 1
 			for(int row1=0; row1<tuples.size(); row1++) {
+				//for each row in table 2
 				for(int row2=0; row2<table2.tuples.size(); row2++) {
+					//if the values match, add them to the new table
 					if(tuples.get(row1)[col1] == table2.tuples.get(row2)[col2]) {
 						Comparable [] tmp = new Comparable[mapping.length];
 						for (int m=0; m<mapping.length; m++) {
