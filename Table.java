@@ -189,7 +189,7 @@ public class Table
         return new Table (name + count++, attribute, domain, key, 
                     tuples.stream().filter(t -> t.equals(index.get(keyVal)))
                     .collect(Collectors.toList()));
-                    // Arrays.asList(index.get(keyVal)));
+              
     } // select
 
     /************************************************************************************
@@ -272,7 +272,7 @@ public class Table
      * @param attribute2  the attributes of table2 to be compared (Primary Key)
      * @param table2      the rhs table in the join operation
      * @return  a table with tuples satisfying the equality predicate
-	 *@author Houston Bass
+	 * @author Houston Bass
      */
     public Table join (String attribute1, String attribute2, Table table2)
     {
@@ -286,10 +286,11 @@ public class Table
 		String[] attributes2 = attribute2.split(" ");
 		int[][] mapping = new int[attributes1.length][2];
 		
+		//create tmp array that can be used for comparisons
 		for(int i=0; i<mapping.length; i++) {
 			int[] tmp = new int[2];
-			tmp[0] = col(attributes1[i]);
-			tmp[1] = table2.col(attributes2[i]);
+			tmp[0] = col(attributes1[i]);//given attribute
+			tmp[1] = table2.col(attributes2[i]);//given attribute
 			
 			mapping[i] = tmp;
 			
@@ -299,8 +300,9 @@ public class Table
 			for(int row1=0; row1<tuples.size(); row1++) {
 				for(int row2=0; row2<table2.tuples.size(); row2++) {
 					if(tuples.get(row1)[mapping[i][0]] == table2.tuples.get(row2)[mapping[i][1]]) {
-						Comparable [] tmp = new Comparable[attribute.length + table2.attribute.length];
+						Comparable [] tmp = new Comparable[attribute.length + table2.attribute.length];//if they map to the same attributes 
 						for (int m=0; m<attribute.length + table2.attribute.length; m++) {
+							//create updated rows
 							if(m < attribute.length)
 								tmp[m] = tuples.get(row1)[m];
 							else
@@ -311,7 +313,7 @@ public class Table
 				}
 			}
 		}
-
+		//return table satisfying the attribute conditions
         return new Table (name + count++, ArrayUtil.concat (attribute, table2.attribute),
                                           ArrayUtil.concat (domain, table2.domain), key, rows);
     } // join
@@ -337,6 +339,7 @@ public class Table
 		List <Integer> get_mapping = new ArrayList<> ();
 		List <Class> get_domains = new ArrayList<> ();
 		
+		//create mapping structure to compare tables
 		int i=0;
 		for(int j=0; j<attribute.length; j++) {
 			get_attributes.add(attribute[j]);
@@ -345,6 +348,7 @@ public class Table
 			i++;
 		}
 		
+		//check for duplicates 
 		for (int j=0; j<table2.attribute.length; j++){
             boolean duplicate = false;
 			for(int k=0; k<get_attributes.size(); k++) {
@@ -353,7 +357,7 @@ public class Table
 					break;
 				}
 			}
-			if (duplicate) 
+			if (duplicate) //if they are the same add to equalAttributes
 				equalAttributes.add(table2.attribute[j]);
 			else {
 				get_attributes.add(table2.attribute[j]);
