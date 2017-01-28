@@ -1,0 +1,12 @@
+TeamLeaderReport.txt
+
+##Summary
+
+Our team met a few times to distribute work as well as brainstorm
+together. Each person communicated with each other so that everyone
+had help when they needed it. Anthony Queen worked on the project 
+and select functions. Cuza Onyeagba implemented the union function.
+Kaitlin McFarland worked on the minus and typecheck functions. 
+Houston Bass developed the join functions. We made deadlines 
+throughout our development process that we all worked together to 
+complete. 
