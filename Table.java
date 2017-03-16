@@ -197,7 +197,7 @@ public class Table
      *
      * #usage movie.union (show)
      *
-	 * @author Cuza Onyeagba
+	 * @author Cuza Onyeagba 
      * @param table2  the rhs table in the union operation
      * @return  a table representing the union
      */
@@ -286,11 +286,7 @@ public class Table
 		String[] attributes2 = attribute2.split(" ");
 		int[][] mapping = new int[attributes1.length][2];
 		
-<<<<<<< HEAD
-		// make an array of pairs to map the cols that need comparing
-=======
 		//create tmp array that can be used for comparisons
->>>>>>> 543d1797711f9c550e8564813f34ec5394151bb0
 		for(int i=0; i<mapping.length; i++) {
 			int[] tmp = new int[2];
 			tmp[0] = col(attributes1[i]);//given attribute
@@ -309,12 +305,7 @@ public class Table
 					//if the value in row1, col1 == row2, col2
 					//used the mapping array to get the right col
 					if(tuples.get(row1)[mapping[i][0]] == table2.tuples.get(row2)[mapping[i][1]]) {
-<<<<<<< HEAD
-						//copy the new joined row into rows
-						Comparable [] tmp = new Comparable[attribute.length + table2.attribute.length];
-=======
 						Comparable [] tmp = new Comparable[attribute.length + table2.attribute.length];//if they map to the same attributes 
->>>>>>> 543d1797711f9c550e8564813f34ec5394151bb0
 						for (int m=0; m<attribute.length + table2.attribute.length; m++) {
 							//create updated rows
 							if(m < attribute.length)
@@ -331,8 +322,9 @@ public class Table
         return new Table (name + count++, ArrayUtil.concat (attribute, table2.attribute),
                                           ArrayUtil.concat (domain, table2.domain), key, rows);
     } // join
-
-    /************************************************************************************
+	
+	
+	/************************************************************************************
      * Join this table and table2 by performing an "natural join".  Tuples from both tables
      * are compared requiring common attributes to be equal.  The duplicate column is also
      * eliminated.
@@ -343,90 +335,67 @@ public class Table
      * @return  a table with tuples satisfying the equality predicate
 	 * @author Houston Bass
      */
-    public Table join (Table table2)
-    {
-        out.println ("RA> " + name + ".join (" + table2.name + ")");
-
-        List <Comparable []> rows = new ArrayList <> ();
-		List <String > equalAttributes = new ArrayList <> ();
-		List <String> get_attributes = new ArrayList <> ();
-		List <Integer> get_mapping = new ArrayList<> ();
-		List <Class> get_domains = new ArrayList<> ();
+	public Table join (Table table2) {
 		
-<<<<<<< HEAD
-		//add all table1 attributes to the joined attributes list
-=======
-		//create mapping structure to compare tables
->>>>>>> 543d1797711f9c550e8564813f34ec5394151bb0
-		int i=0;
-		for(int j=0; j<attribute.length; j++) {
-			get_attributes.add(attribute[j]);
-			get_domains.add(domain[j]);
-			get_mapping.add(j);
-			i++;
+		out.println ("RA> " + name + ".join (" + table2.name + ")");
+		//get lists of attributes
+		ArrayList<String> matchingAttributes = new ArrayList<>();
+		
+		//get the list of matching attributes
+		for(int i=0; i<attribute.length; i++) {
+			for(int j=0; j<table2.attribute.length; j++) {
+				if( attribute[i].equals(table2.attribute[j]) )
+					matchingAttributes.add(attribute[i]);
+			}
 		}
 		
-<<<<<<< HEAD
-		//add all the non duplicate attributes from table2 to the list
-=======
-		//check for duplicates 
->>>>>>> 543d1797711f9c550e8564813f34ec5394151bb0
-		for (int j=0; j<table2.attribute.length; j++){
-            boolean duplicate = false;
-			for(int k=0; k<get_attributes.size(); k++) {
-				if(table2.attribute[j].equals(get_attributes.get(k))) {
-					duplicate = true;
-					break;
-				}
-			}
-<<<<<<< HEAD
-			//add the duplicates to a specail list that we will use for comparing later
-			if (duplicate) 
-=======
-			if (duplicate) //if they are the same add to equalAttributes
->>>>>>> 543d1797711f9c550e8564813f34ec5394151bb0
-				equalAttributes.add(table2.attribute[j]);
-			else {
-				get_attributes.add(table2.attribute[j]);
-				get_mapping.add(i-domain.length);
-				get_domains.add(table2.domain[i-domain.length]);			
-			}
-			i++;
-		}
-		//convert the lists to arrays for easier traversal (not necissary but i liked it better this way)
-		String[] attributes = get_attributes.toArray(new String[get_attributes.size()]);
-		Integer[] mapping = get_mapping.toArray(new Integer[get_mapping.size()]);
-		Class[] domains = get_domains.toArray(new Class[get_domains.size()]);	
+		//get the new list of attributes
+		ArrayList<String> newAttributeList = new ArrayList<>(); //declare & initialize new attributes list
+		ArrayList<Class> newDomain = new ArrayList<>(); 		//declare & initialize new domains list
 		
-		//for all the equal attributes
-		for(int j=0; j<equalAttributes.size(); j++) {
+		//Add the attributes from table 1 & associated domains
+		for(int i=0; i<attribute.length; i++) {
+			newAttributeList.add(attribute[i]);
+			newDomain.add(domain[i]);
+		}
+		
+		//add attributes from table2 & associated domains
+		for(int i=0; i<table2.attribute.length; i++)
+			if( !matchingAttributes.contains(table2.attribute[i]) ) {
+				newAttributeList.add(table2.attribute[i]);
+				newDomain.add(table2.domain[i]);
+			}
 			
-			//get the colum numbers for the rows
-			int col1 = col(equalAttributes.get(j));
-			int col2 = table2.col(equalAttributes.get(j));
-			
-			//for each row in table 1
-			for(int row1=0; row1<tuples.size(); row1++) {
-				//for each row in table 2
-				for(int row2=0; row2<table2.tuples.size(); row2++) {
-					//if the values match, add them to the new table
-					if(tuples.get(row1)[col1] == table2.tuples.get(row2)[col2]) {
-						Comparable [] tmp = new Comparable[mapping.length];
-						for (int m=0; m<mapping.length; m++) {
-							if(m < attribute.length)
-								tmp[m] = tuples.get(row1)[mapping[m]];
-							else
-								tmp[m] = table2.tuples.get(row2)[mapping[m]];
-						}
-						rows.add(tmp);
+		String[] compareAttributes = matchingAttributes.toArray(new String[matchingAttributes.size()]);		
+		List <Comparable []> rows = new ArrayList <> ();
+		
+		for(int row1=0; row1<tuples.size(); row1++) {
+			for(int row2=0; row2<table2.tuples.size(); row2++) {
+				boolean match = true;
+				for(int n=0; n<compareAttributes.length; n++) {
+					if(!tuples.get(row1)[col(compareAttributes[n])].equals(table2.tuples.get(row2)[table2.col(compareAttributes[n])]) ) {
+						match = false;
+						break;
 					}
 				}
+				if(match) {
+					Comparable [] tmp = new Comparable[attribute.length + table2.attribute.length - compareAttributes.length];//if they map to the same attributes
+					for(int i=0; i<attribute.length; i++) tmp[i] = tuples.get(row1)[i];
+					for(int i=0; i<table2.attribute.length; i++) 
+						if( !matchingAttributes.contains(table2.attribute[i]) )
+							tmp[attribute.length + i] = table2.tuples.get(row2)[i];
+					rows.add(tmp);
+				}
 			}
 		}
 		
-		return new Table (name + count++, attributes, domains, ArrayUtil.concat (key, table2.key), rows);
-    } // join
+		
+		return new Table (name + count++, newAttributeList.toArray(new String[newAttributeList.size()]),
+                                          newDomain.toArray(new Class[newDomain.size()]), 
+										  key, rows);
+	}
 
+   
     /************************************************************************************
      * Return the column position for the given attribute name.
      *
